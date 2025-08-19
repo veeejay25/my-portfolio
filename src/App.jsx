@@ -14,7 +14,7 @@ function App() {
     let WIDTH, HEIGHT
     let animationId
 
-    const v = (32 + 16 + 8) * 2.5
+    const v = (32 + 16 + 8) * 3
     const R = Math.random
     const C = Math.cos
     const Y = 6.3
@@ -27,10 +27,10 @@ function App() {
       // Recalculate letter positions
       hV = addLetterShape(vShape, -300, 0)
       he1 = addLetterShape(e1Shape, -150, 0)
-      he2 = addLetterShape(e2Shape, -50, 0)
-      hJ = addLetterShape(jShape, 80, 0)
-      ha = addLetterShape(aShape, 200, 0)
-      hy = addLetterShape(yShape, 320, 0)
+      he2 = addLetterShape(e2Shape, -40, 0)
+      hJ = addLetterShape(jShape, 130, 0)
+      ha = addLetterShape(aShape, 270, 0)
+      hy = addLetterShape(yShape, 380, 0)
     }
 
     // Add resize event listener
@@ -54,24 +54,32 @@ function App() {
 
     let e1Shape = [
       [-45, -120],
-      [-15, -120],
-      [-15, -15],
-      [30, -15],
-      [30, 15],
-      [-15, 15],
-      [-15, 75],
-      [-45, 75]
+      [-45, 75],
+      [45, 75],
+      [45, 45],
+      [-15, 45],
+      [-15, 0],
+      [30, 0],
+      [30, -30],
+      [-15, -30],
+      [-15, -100],
+      [45, -100],
+      [45, -120]
     ]
 
     let e2Shape = [
-      [-45, -120],
-      [-15, -120],
-      [-15, -15],
-      [30, -15],
-      [30, 15],
-      [-15, 15],
-      [-15, 75],
-      [-45, 75]
+      [-30, -120],
+      [-30, 75],
+      [60, 75],
+      [60, 45],
+      [0, 45],
+      [0, 0],
+      [45, 0],
+      [45, -30],
+      [0, -30],
+      [0, -100],
+      [60, -100],
+      [60, -120]
     ]
 
     let jShape = [
@@ -191,10 +199,10 @@ function App() {
     // Assign target points to each shape with proper spacing
     hV = addLetterShape(vShape, -300, 0)
     he1 = addLetterShape(e1Shape, -150, 0)
-    he2 = addLetterShape(e2Shape, -50, 0)
-    hJ = addLetterShape(jShape, 80, 0)
-    ha = addLetterShape(aShape, 200, 0)
-    hy = addLetterShape(yShape, 320, 0)
+    he2 = addLetterShape(e2Shape, -40, 0)
+    hJ = addLetterShape(jShape, 130, 0)
+    ha = addLetterShape(aShape, 270, 0)
+    hy = addLetterShape(yShape, 380, 0)
 
     // Initialize particles for all letters
     let particleCount = v / 6
