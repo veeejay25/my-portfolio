@@ -14,7 +14,7 @@ function App() {
     let WIDTH, HEIGHT
     let animationId
 
-    const v = (32 + 16 + 8) * 3
+    const v = (32 + 16 + 8) * 4
     const R = Math.random
     const C = Math.cos
     const Y = 6.3
@@ -25,12 +25,12 @@ function App() {
       HEIGHT = canvas.height = window.innerHeight
       
       // Recalculate letter positions
-      hV = addLetterShape(vShape, -300, 0)
-      he1 = addLetterShape(e1Shape, -150, 0)
-      he2 = addLetterShape(e2Shape, -40, 0)
-      hJ = addLetterShape(jShape, 130, 0)
-      ha = addLetterShape(aShape, 270, 0)
-      hy = addLetterShape(yShape, 380, 0)
+      hV = addLetterShape(vShape, -375, 0)
+      he1 = addLetterShape(e1Shape, -225, 0)
+      he2 = addLetterShape(e2Shape, -75, 0)
+      hJ = addLetterShape(jShape, 100, 0)
+      ha = addLetterShape(aShape, 250, 0)
+      hy = addLetterShape(yShape, 375, 0)
     }
 
     // Add resize event listener
@@ -43,84 +43,84 @@ function App() {
 
     // Letter shapes (scaled up by 1.5x)
     let vShape = [
-      [-75, -120],
-      [-30, -120],
-      [0, 27],
-      [30, -120],
-      [75, -120],
-      [30, 75],
-      [-30, 75]
+      [-60, -120],
+      [-25, -120],
+      [0, 20],
+      [25, -120],
+      [60, -120],
+      [25, 75],
+      [-25, 75]
     ]
 
     let e1Shape = [
-      [-45, -120],
-      [-45, 75],
-      [45, 75],
-      [45, 45],
-      [-15, 45],
-      [-15, 0],
-      [30, 0],
-      [30, -30],
-      [-15, -30],
-      [-15, -100],
-      [45, -100],
-      [45, -120]
+      [-60, -120],
+      [-60, 75],
+      [60, 75],
+      [60, 45],
+      [-20, 45],
+      [-20, 0],
+      [40, 0],
+      [40, -30],
+      [-20, -30],
+      [-20, -100],
+      [60, -100],
+      [60, -120]
     ]
 
     let e2Shape = [
-      [-30, -120],
-      [-30, 75],
+      [-60, -120],
+      [-60, 75],
       [60, 75],
       [60, 45],
-      [0, 45],
-      [0, 0],
-      [45, 0],
-      [45, -30],
-      [0, -30],
-      [0, -100],
+      [-20, 45],
+      [-20, 0],
+      [40, 0],
+      [40, -30],
+      [-20, -30],
+      [-20, -100],
       [60, -100],
       [60, -120]
     ]
 
     let jShape = [
-      [45, -120],   // top right
-      [45, 60],     // down to curve start
-      [30, 90],     // curve point 1
-      [0, 105],     // curve point 2
-      [-30, 90],    // curve point 3
-      [-45, 60],    // curve point 4
-      [-45, 40],    // left bottom
-      [-15, 40],    // inner left
-      [-15, 75],    // inner curve start
-      [0, 85],      // inner curve
-      [15, 75],     // inner curve end
-      [15, -120],   // up to top
-      [45, -120] 
+      [60, -120],   // top right
+      [60, 45],     // down to curve start
+      [40, 65],     // curve point 1
+      [0, 75],      // curve point 2
+      [-40, 65],    // curve point 3
+      [-60, 45],    // curve point 4
+      [-60, 25],    // left bottom
+      [-20, 25],    // inner left
+      [-20, 55],    // inner curve start
+      [0, 60],      // inner curve
+      [20, 55],     // inner curve end
+      [20, -120],   // up to top
+      [60, -120] 
     ]
 
     let aShape = [
-      [-75, 120],   // bottom left
-      [-30, 120],   // bottom left inner
-      [-15, 40],    // left side of crossbar
-      [15, 40],     // right side of crossbar
-      [30, 120],    // bottom right inner
-      [75, 120],    // bottom right
+      [-60, 75],    // bottom left
+      [-25, 75],    // bottom left inner
+      [-10, 15],    // left side of crossbar
+      [10, 15],     // right side of crossbar
+      [25, 75],     // bottom right inner
+      [60, 75],     // bottom right
       [15, -120],   // top right
       [-15, -120],  // top left
-      [-75, 120] 
+      [-60, 75] 
     ]
 
     let yShape = [
-      [-75, -120],  // top left
-      [-30, -120],  // top left inner
-      [0, -20],     // center junction
-      [30, -120],   // top right inner
-      [75, -120],   // top right
-      [30, 0],      // right side of center
-      [30, 120],    // bottom right
-      [-30, 120],   // bottom left
-      [-30, 0],     // left side of center
-      [-75, -120]   // back to start
+      [-60, -120],  // top left
+      [-25, -120],  // top left inner
+      [0, -15],     // center junction
+      [25, -120],   // top right inner
+      [60, -120],   // top right
+      [20, 0],      // right side of center
+      [20, 75],     // bottom right
+      [-20, 75],    // bottom left
+      [-20, 0],     // left side of center
+      [-60, -120]   // back to start
     ]
 
     // Function to initialize particles for any letter
@@ -204,12 +204,12 @@ function App() {
     resizeCanvas()
 
     // Assign target points to each shape with proper spacing
-    hV = addLetterShape(vShape, -300, 0)
-    he1 = addLetterShape(e1Shape, -150, 0)
-    he2 = addLetterShape(e2Shape, -40, 0)
-    hJ = addLetterShape(jShape, 130, 0)
-    ha = addLetterShape(aShape, 270, 0)
-    hy = addLetterShape(yShape, 380, 0)
+    hV = addLetterShape(vShape, -375, 0)
+    he1 = addLetterShape(e1Shape, -225, 0)
+    he2 = addLetterShape(e2Shape, -75, 0)
+    hJ = addLetterShape(jShape, 100, 0)
+    ha = addLetterShape(aShape, 250, 0)
+    hy = addLetterShape(yShape, 375, 0)
 
     // Initialize particles for all letters
     let particleCount = v / 6
