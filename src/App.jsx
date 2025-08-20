@@ -1,16 +1,54 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 import './App.css'
 
 function App() {
   const canvasRef = useRef(null)
 
+  // Memoize letter configurations to prevent recreation on each render
+  const letterConfigs = useMemo(() => {
+    const LETTER_SHAPES = {
+      V: [
+        [-60, -120], [-25, -120], [0, 20], [25, -120], 
+        [60, -120], [25, 75], [-25, 75]
+      ],
+      E: [
+        [-60, -120], [-60, 75], [60, 75], [60, 45], [-20, 45], 
+        [-20, 0], [40, 0], [40, -30], [-20, -30], [-20, -100], 
+        [60, -100], [60, -120]
+      ],
+      J: [
+        [60, -120], [60, 45], [40, 65], [0, 75], [-40, 65], 
+        [-60, 45], [-60, 25], [-20, 25], [-20, 55], [0, 60], 
+        [20, 55], [20, -120], [60, -120]
+      ],
+      A: [
+        [-60, 75], [-25, 75], [-10, 15], [10, 15], [25, 75], 
+        [60, 75], [15, -120], [-15, -120], [-60, 75]
+      ],
+      Y: [
+        [-60, -120], [-25, -120], [0, -15], [25, -120], [60, -120], 
+        [20, 0], [20, 75], [-20, 75], [-20, 0], [-60, -120]
+      ]
+    }
+
+    return [
+      { letter: 'V', shape: LETTER_SHAPES.V, position: -375, particles: [], targets: [] },
+      { letter: 'E', shape: LETTER_SHAPES.E, position: -225, particles: [], targets: [] },
+      { letter: 'E', shape: LETTER_SHAPES.E, position: -75, particles: [], targets: [] },
+      { letter: 'J', shape: LETTER_SHAPES.J, position: 100, particles: [], targets: [] },
+      { letter: 'A', shape: LETTER_SHAPES.A, position: 250, particles: [], targets: [] },
+      { letter: 'Y', shape: LETTER_SHAPES.Y, position: 375, particles: [], targets: [] }
+    ]
+  }, [])
+
   useEffect(() => {
     const canvas = canvasRef.current
+    if (!canvas) return
+    
     const ctx = canvas.getContext('2d')
+    if (!ctx) return
     
     // Animation variables
-    let eV = [], ee1 = [], ee2 = [], eJ = [], ea = [], ey = []
-    let hV = [], he1 = [], he2 = [], hJ = [], ha = [], hy = []
     let WIDTH, HEIGHT
     let animationId
 
@@ -25,103 +63,26 @@ function App() {
       HEIGHT = canvas.height = window.innerHeight
       
       // Recalculate letter positions
-      hV = addLetterShape(vShape, -375, 0)
-      he1 = addLetterShape(e1Shape, -225, 0)
-      he2 = addLetterShape(e2Shape, -75, 0)
-      hJ = addLetterShape(jShape, 100, 0)
-      ha = addLetterShape(aShape, 250, 0)
-      hy = addLetterShape(yShape, 375, 0)
+      LETTERS.forEach(letterConfig => {
+        letterConfig.targets = addLetterShape(letterConfig.shape, letterConfig.position, 0)
+      })
     }
 
-    // Add resize event listener
-    window.addEventListener('resize', resizeCanvas)
+    // Add resize event listener with throttling
+    let resizeTimeout
+    const handleResize = () => {
+      if (resizeTimeout) clearTimeout(resizeTimeout)
+      resizeTimeout = setTimeout(resizeCanvas, 100)
+    }
+    window.addEventListener('resize', handleResize)
 
     // Function to add letter shapes
     function addLetterShape(points, offsetX, offsetY) {
       return points.map(([x, y]) => [WIDTH / 2 + x + offsetX, HEIGHT / 2 + y + offsetY])
     }
 
-    // Letter shapes (scaled up by 1.5x)
-    let vShape = [
-      [-60, -120],
-      [-25, -120],
-      [0, 20],
-      [25, -120],
-      [60, -120],
-      [25, 75],
-      [-25, 75]
-    ]
-
-    let e1Shape = [
-      [-60, -120],
-      [-60, 75],
-      [60, 75],
-      [60, 45],
-      [-20, 45],
-      [-20, 0],
-      [40, 0],
-      [40, -30],
-      [-20, -30],
-      [-20, -100],
-      [60, -100],
-      [60, -120]
-    ]
-
-    let e2Shape = [
-      [-60, -120],
-      [-60, 75],
-      [60, 75],
-      [60, 45],
-      [-20, 45],
-      [-20, 0],
-      [40, 0],
-      [40, -30],
-      [-20, -30],
-      [-20, -100],
-      [60, -100],
-      [60, -120]
-    ]
-
-    let jShape = [
-      [60, -120],   // top right
-      [60, 45],     // down to curve start
-      [40, 65],     // curve point 1
-      [0, 75],      // curve point 2
-      [-40, 65],    // curve point 3
-      [-60, 45],    // curve point 4
-      [-60, 25],    // left bottom
-      [-20, 25],    // inner left
-      [-20, 55],    // inner curve start
-      [0, 60],      // inner curve
-      [20, 55],     // inner curve end
-      [20, -120],   // up to top
-      [60, -120] 
-    ]
-
-    let aShape = [
-      [-60, 75],    // bottom left
-      [-25, 75],    // bottom left inner
-      [-10, 15],    // left side of crossbar
-      [10, 15],     // right side of crossbar
-      [25, 75],     // bottom right inner
-      [60, 75],     // bottom right
-      [15, -120],   // top right
-      [-15, -120],  // top left
-      [-60, 75] 
-    ]
-
-    let yShape = [
-      [-60, -120],  // top left
-      [-25, -120],  // top left inner
-      [0, -15],     // center junction
-      [25, -120],   // top right inner
-      [60, -120],   // top right
-      [20, 0],      // right side of center
-      [20, 75],     // bottom right
-      [-20, 75],    // bottom left
-      [-20, 0],     // left side of center
-      [-60, -120]   // back to start
-    ]
+    // Use memoized letter configurations
+    const LETTERS = letterConfigs
 
     // Function to initialize particles for any letter
     function initializeParticles(particleArray, targetPoints, particleCount) {
@@ -191,46 +152,38 @@ function App() {
     function animate() {
       ctx.fillStyle = "rgba(0,0,0,.2)"
       ctx.fillRect(0, 0, WIDTH, HEIGHT)
-      updateParticles(eV, hV)
-      updateParticles(ee1, he1)
-      updateParticles(ee2, he2)
-      updateParticles(eJ, hJ)
-      updateParticles(ea, ha)
-      updateParticles(ey, hy)
+      LETTERS.forEach(letterConfig => {
+        updateParticles(letterConfig.particles, letterConfig.targets)
+      })
       animationId = requestAnimationFrame(animate)
     }
 
     // Initialize everything
     resizeCanvas()
 
-    // Assign target points to each shape with proper spacing
-    hV = addLetterShape(vShape, -375, 0)
-    he1 = addLetterShape(e1Shape, -225, 0)
-    he2 = addLetterShape(e2Shape, -75, 0)
-    hJ = addLetterShape(jShape, 100, 0)
-    ha = addLetterShape(aShape, 250, 0)
-    hy = addLetterShape(yShape, 375, 0)
-
     // Initialize particles for all letters
-    let particleCount = v / 6
-    initializeParticles(eV, hV, particleCount)
-    initializeParticles(ee1, he1, particleCount)
-    initializeParticles(ee2, he2, particleCount)
-    initializeParticles(eJ, hJ, particleCount)
-    initializeParticles(ea, ha, particleCount)
-    initializeParticles(ey, hy, particleCount)
+    const particleCount = v / 6
+    LETTERS.forEach(letterConfig => {
+      initializeParticles(letterConfig.particles, letterConfig.targets, particleCount)
+    })
 
     // Start animation
     animate()
 
     // Cleanup function
     return () => {
-      window.removeEventListener('resize', resizeCanvas)
+      window.removeEventListener('resize', handleResize)
+      if (resizeTimeout) clearTimeout(resizeTimeout)
       if (animationId) {
         cancelAnimationFrame(animationId)
       }
+      // Clear particles arrays
+      LETTERS.forEach(letterConfig => {
+        letterConfig.particles.length = 0
+        letterConfig.targets.length = 0
+      })
     }
-  }, [])
+  }, [letterConfigs])
 
   return (
     <div className="App">
