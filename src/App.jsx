@@ -83,37 +83,44 @@ function App() {
     ]
 
     let jShape = [
-      [-67, -15],
-      [-30, -15],
-      [-15, 27],
-      [15, 27],
-      [30, -120],
-      [67, -120],
-      [52, 75],
-      [-52, 75]
+      [45, -120],   // top right
+      [45, 60],     // down to curve start
+      [30, 90],     // curve point 1
+      [0, 105],     // curve point 2
+      [-30, 90],    // curve point 3
+      [-45, 60],    // curve point 4
+      [-45, 40],    // left bottom
+      [-15, 40],    // inner left
+      [-15, 75],    // inner curve start
+      [0, 85],      // inner curve
+      [15, 75],     // inner curve end
+      [15, -120],   // up to top
+      [45, -120] 
     ]
 
     let aShape = [
-      [-60, 75],
-      [-30, 75],
-      [-15, -120],
-      [15, -120],
-      [30, 75],
-      [60, 75],
-      [45, 30],
-      [-45, 30]
+      [-75, 120],   // bottom left
+      [-30, 120],   // bottom left inner
+      [-15, 40],    // left side of crossbar
+      [15, 40],     // right side of crossbar
+      [30, 120],    // bottom right inner
+      [75, 120],    // bottom right
+      [15, -120],   // top right
+      [-15, -120],  // top left
+      [-75, 120] 
     ]
 
     let yShape = [
-      [-60, -120],
-      [-30, -120],
-      [0, 0],
-      [30, -120],
-      [60, -120],
-      [30, 45],
-      [15, 75],
-      [-15, 75],
-      [-30, 45]
+      [-75, -120],  // top left
+      [-30, -120],  // top left inner
+      [0, -20],     // center junction
+      [30, -120],   // top right inner
+      [75, -120],   // top right
+      [30, 0],      // right side of center
+      [30, 120],    // bottom right
+      [-30, 120],   // bottom left
+      [-30, 0],     // left side of center
+      [-75, -120]   // back to start
     ]
 
     // Function to initialize particles for any letter
