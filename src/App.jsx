@@ -31,14 +31,46 @@ function App() {
       ]
     }
 
-    return [
-      { letter: 'V', shape: LETTER_SHAPES.V, position: -375, particles: [], targets: [] },
-      { letter: 'E', shape: LETTER_SHAPES.E, position: -225, particles: [], targets: [] },
-      { letter: 'E', shape: LETTER_SHAPES.E, position: -75, particles: [], targets: [] },
-      { letter: 'J', shape: LETTER_SHAPES.J, position: 100, particles: [], targets: [] },
-      { letter: 'A', shape: LETTER_SHAPES.A, position: 250, particles: [], targets: [] },
-      { letter: 'Y', shape: LETTER_SHAPES.Y, position: 375, particles: [], targets: [] }
-    ]
+    const PS_BUTTON_SHAPES = {
+      TRIANGLE: [
+        [0, -150], [130, 130], [-130, 130]
+      ],
+      CIRCLE: (() => {
+        const points = []
+        for (let i = 0; i < 12; i++) {
+          const angle = (i / 12) * Math.PI * 2
+          points.push([Math.cos(angle) * 140, Math.sin(angle) * 140])
+        }
+        return points
+      })(),
+      X_SLASH: [
+        [-120, -80], [-80, -120], [120, 80], [80, 120]
+      ],
+      X_BACKSLASH: [
+        [80, -120], [120, -80], [-80, 120], [-120, 80]
+      ],
+      SQUARE: [
+        [-120, -120], [120, -120], [120, 120], [-120, 120]
+      ]
+    }
+
+    return {
+      letters: [
+        { letter: 'V', shape: LETTER_SHAPES.V, position: -375, particles: [], targets: [] },
+        { letter: 'E', shape: LETTER_SHAPES.E, position: -225, particles: [], targets: [] },
+        { letter: 'E', shape: LETTER_SHAPES.E, position: -75, particles: [], targets: [] },
+        { letter: 'J', shape: LETTER_SHAPES.J, position: 100, particles: [], targets: [] },
+        { letter: 'A', shape: LETTER_SHAPES.A, position: 250, particles: [], targets: [] },
+        { letter: 'Y', shape: LETTER_SHAPES.Y, position: 375, particles: [], targets: [] }
+      ],
+      psButtons: [
+        { name: 'TRIANGLE', shape: PS_BUTTON_SHAPES.TRIANGLE, particles: [], targets: [], color: 'hsl(120, 70%, 50%)', corner: 'top-left' },
+        { name: 'CIRCLE', shape: PS_BUTTON_SHAPES.CIRCLE, particles: [], targets: [], color: 'hsl(0, 70%, 50%)', corner: 'top-right' },
+        { name: 'X_SLASH', shape: PS_BUTTON_SHAPES.X_SLASH, particles: [], targets: [], color: 'hsl(240, 70%, 50%)', corner: 'bottom-left' },
+        { name: 'X_BACKSLASH', shape: PS_BUTTON_SHAPES.X_BACKSLASH, particles: [], targets: [], color: 'hsl(260, 70%, 50%)', corner: 'bottom-left' },
+        { name: 'SQUARE', shape: PS_BUTTON_SHAPES.SQUARE, particles: [], targets: [], color: 'hsl(300, 70%, 50%)', corner: 'bottom-right' }
+      ]
+    }
   }, [])
 
   useEffect(() => {
@@ -66,6 +98,30 @@ function App() {
       LETTERS.forEach(letterConfig => {
         letterConfig.targets = addLetterShape(letterConfig.shape, letterConfig.position, 0)
       })
+      
+      // Recalculate button positions in corners
+      PS_BUTTONS.forEach(buttonConfig => {
+        let x, y
+        switch(buttonConfig.corner) {
+          case 'top-left':
+            x = -WIDTH/2 + 200
+            y = -HEIGHT/2 + 200
+            break
+          case 'top-right':
+            x = WIDTH/2 - 200
+            y = -HEIGHT/2 + 200
+            break
+          case 'bottom-left':
+            x = -WIDTH/2 + 200
+            y = HEIGHT/2 - 200
+            break
+          case 'bottom-right':
+            x = WIDTH/2 - 200
+            y = HEIGHT/2 - 200
+            break
+        }
+        buttonConfig.targets = addLetterShape(buttonConfig.shape, x, y)
+      })
     }
 
     // Add resize event listener with throttling
@@ -81,11 +137,12 @@ function App() {
       return points.map(([x, y]) => [WIDTH / 2 + x + offsetX, HEIGHT / 2 + y + offsetY])
     }
 
-    // Use memoized letter configurations
-    const LETTERS = letterConfigs
+    // Use memoized configurations
+    const LETTERS = letterConfigs.letters
+    const PS_BUTTONS = letterConfigs.psButtons
 
     // Function to initialize particles for any letter
-    function initializeParticles(particleArray, targetPoints, particleCount) {
+    function initializeParticles(particleArray, targetPoints, particleCount, colorOverride) {
       for (let i = 0; i < particleCount; i++) {
         let x = R() * WIDTH
         let y = R() * HEIGHT
@@ -103,7 +160,7 @@ function App() {
           q: ~~(R() * targetPoints.length),
           D: 2 * (i % 2) - 1,
           F: 0.2 * R() + 0.7,
-          f: `hsla(${~~H},${~~S}%,${~~B}%,.1)`
+          f: colorOverride || `hsla(${~~H},${~~S}%,${~~B}%,.1)`
         }
         particleArray.push(f)
       }
@@ -155,6 +212,9 @@ function App() {
       LETTERS.forEach(letterConfig => {
         updateParticles(letterConfig.particles, letterConfig.targets)
       })
+      PS_BUTTONS.forEach(buttonConfig => {
+        updateParticles(buttonConfig.particles, buttonConfig.targets)
+      })
       animationId = requestAnimationFrame(animate)
     }
 
@@ -165,6 +225,12 @@ function App() {
     const particleCount = v / 15
     LETTERS.forEach(letterConfig => {
       initializeParticles(letterConfig.particles, letterConfig.targets, particleCount)
+    })
+
+    // Initialize particles for PS buttons (fewer particles)
+    const buttonParticleCount = v / 25
+    PS_BUTTONS.forEach(buttonConfig => {
+      initializeParticles(buttonConfig.particles, buttonConfig.targets, buttonParticleCount, buttonConfig.color.replace('hsl', 'hsla').replace(')', ',.2)'))
     })
 
     // Start animation
@@ -181,6 +247,10 @@ function App() {
       LETTERS.forEach(letterConfig => {
         letterConfig.particles.length = 0
         letterConfig.targets.length = 0
+      })
+      PS_BUTTONS.forEach(buttonConfig => {
+        buttonConfig.particles.length = 0
+        buttonConfig.targets.length = 0
       })
     }
   }, [letterConfigs])
