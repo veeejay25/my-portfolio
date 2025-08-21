@@ -93,7 +93,7 @@ function App() {
         let S = 40 * R() + 60
         let B = 60 * R() + 20
         let f = []
-        for (let k = 0; k < v / 6; k++) f[k] = {
+        for (let k = 0; k < v / 5; k++) f[k] = {
           x: x,
           y: y,
           X: 0,
@@ -139,7 +139,7 @@ function App() {
         path(u)
         u.X *= u.F
         u.Y *= u.F
-        for (let k = 0; k < v / 6 - 1;) {
+        for (let k = 0; k < v / 5 - 1;) {
           let T = f[k]
           let N = f[++k]
           N.x -= 0.7 * (N.x - T.x)
@@ -162,7 +162,7 @@ function App() {
     resizeCanvas()
 
     // Initialize particles for all letters
-    const particleCount = v / 6
+    const particleCount = v / 15
     LETTERS.forEach(letterConfig => {
       initializeParticles(letterConfig.particles, letterConfig.targets, particleCount)
     })
