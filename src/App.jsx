@@ -94,33 +94,41 @@ function App() {
       WIDTH = canvas.width = window.innerWidth
       HEIGHT = canvas.height = window.innerHeight
       
+      // Calculate scaling factor based on screen size
+      const baseWidth = 1920
+      const baseHeight = 1080
+      const scaleX = WIDTH / baseWidth
+      const scaleY = HEIGHT / baseHeight
+      const scale = Math.min(scaleX, scaleY, 1.0) // Cap at 1.0x to prevent oversizing
+      
       // Recalculate letter positions
       LETTERS.forEach(letterConfig => {
-        letterConfig.targets = addLetterShape(letterConfig.shape, letterConfig.position, 0)
+        letterConfig.targets = addLetterShape(letterConfig.shape, letterConfig.position, 0, scale)
       })
       
       // Recalculate button positions in corners
       PS_BUTTONS.forEach(buttonConfig => {
         let x, y
+        const cornerOffset = 200 * scale
         switch(buttonConfig.corner) {
           case 'top-left':
-            x = -WIDTH/2 + 200
-            y = -HEIGHT/2 + 200
+            x = -WIDTH/2 + cornerOffset
+            y = -HEIGHT/2 + cornerOffset
             break
           case 'top-right':
-            x = WIDTH/2 - 200
-            y = -HEIGHT/2 + 200
+            x = WIDTH/2 - cornerOffset
+            y = -HEIGHT/2 + cornerOffset
             break
           case 'bottom-left':
-            x = -WIDTH/2 + 200
-            y = HEIGHT/2 - 200
+            x = -WIDTH/2 + cornerOffset
+            y = HEIGHT/2 - cornerOffset
             break
           case 'bottom-right':
-            x = WIDTH/2 - 200
-            y = HEIGHT/2 - 200
+            x = WIDTH/2 - cornerOffset
+            y = HEIGHT/2 - cornerOffset
             break
         }
-        buttonConfig.targets = addLetterShape(buttonConfig.shape, x, y)
+        buttonConfig.targets = addLetterShape(buttonConfig.shape, x, y, scale)
       })
     }
 
@@ -133,8 +141,8 @@ function App() {
     window.addEventListener('resize', handleResize)
 
     // Function to add letter shapes
-    function addLetterShape(points, offsetX, offsetY) {
-      return points.map(([x, y]) => [WIDTH / 2 + x + offsetX, HEIGHT / 2 + y + offsetY])
+    function addLetterShape(points, offsetX, offsetY, scale = 1) {
+      return points.map(([x, y]) => [WIDTH / 2 + (x * scale) + (offsetX * scale), HEIGHT / 2 + (y * scale) + (offsetY * scale)])
     }
 
     // Use memoized configurations
