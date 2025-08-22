@@ -1,4 +1,5 @@
 import { useEffect, useRef, useMemo } from 'react'
+import NavigationButton from './components/NavigationButton'
 import './App.css'
 
 function App() {
@@ -63,12 +64,47 @@ function App() {
         { letter: 'A', shape: LETTER_SHAPES.A, position: 250, particles: [], targets: [] },
         { letter: 'Y', shape: LETTER_SHAPES.Y, position: 375, particles: [], targets: [] }
       ],
-      psButtons: [
-        { name: 'TRIANGLE', shape: PS_BUTTON_SHAPES.TRIANGLE, particles: [], targets: [], color: 'hsl(120, 70%, 50%)', corner: 'top-left' },
-        { name: 'CIRCLE', shape: PS_BUTTON_SHAPES.CIRCLE, particles: [], targets: [], color: 'hsl(0, 70%, 50%)', corner: 'top-right' },
-        { name: 'X_SLASH', shape: PS_BUTTON_SHAPES.X_SLASH, particles: [], targets: [], color: 'hsl(240, 70%, 50%)', corner: 'bottom-left' },
-        { name: 'X_BACKSLASH', shape: PS_BUTTON_SHAPES.X_BACKSLASH, particles: [], targets: [], color: 'hsl(260, 70%, 50%)', corner: 'bottom-left' },
-        { name: 'SQUARE', shape: PS_BUTTON_SHAPES.SQUARE, particles: [], targets: [], color: 'hsl(300, 70%, 50%)', corner: 'bottom-right' }
+      navigationButtons: [
+        { 
+          name: 'about',
+          text: 'About me',
+          shape: PS_BUTTON_SHAPES.TRIANGLE, 
+          color: 'hsl(120, 70%, 50%)', 
+          position: 'top-left',
+          href: '#about'
+        },
+        { 
+          name: 'projects',
+          text: 'Projects',
+          shape: PS_BUTTON_SHAPES.CIRCLE, 
+          color: 'hsl(0, 70%, 50%)', 
+          position: 'top-right',
+          href: '#projects'
+        },
+        { 
+          name: 'skills',
+          text: 'Skills',
+          shape: PS_BUTTON_SHAPES.X_SLASH, 
+          color: 'hsl(240, 70%, 50%)', 
+          position: 'bottom-left',
+          href: '#skills'
+        },
+        { 
+          name: 'skills-backslash',
+          text: '',
+          shape: PS_BUTTON_SHAPES.X_BACKSLASH, 
+          color: 'hsl(240, 70%, 50%)', 
+          position: 'bottom-left',
+          href: '#skills'
+        },
+        { 
+          name: 'contact',
+          text: 'Contact',
+          shape: PS_BUTTON_SHAPES.SQUARE, 
+          color: 'hsl(300, 70%, 50%)', 
+          position: 'bottom-right',
+          href: '#contact'
+        }
       ]
     }
   }, [])
@@ -105,31 +141,6 @@ function App() {
       LETTERS.forEach(letterConfig => {
         letterConfig.targets = addLetterShape(letterConfig.shape, letterConfig.position, 0, scale)
       })
-      
-      // Recalculate button positions in corners
-      PS_BUTTONS.forEach(buttonConfig => {
-        let x, y
-        const cornerOffset = 200 * scale
-        switch(buttonConfig.corner) {
-          case 'top-left':
-            x = -WIDTH/2 + cornerOffset
-            y = -HEIGHT/2 + cornerOffset
-            break
-          case 'top-right':
-            x = WIDTH/2 - cornerOffset
-            y = -HEIGHT/2 + cornerOffset
-            break
-          case 'bottom-left':
-            x = -WIDTH/2 + cornerOffset
-            y = HEIGHT/2 - cornerOffset
-            break
-          case 'bottom-right':
-            x = WIDTH/2 - cornerOffset
-            y = HEIGHT/2 - cornerOffset
-            break
-        }
-        buttonConfig.targets = addLetterShape(buttonConfig.shape, x, y, scale)
-      })
     }
 
     // Add resize event listener with throttling
@@ -147,7 +158,6 @@ function App() {
 
     // Use memoized configurations
     const LETTERS = letterConfigs.letters
-    const PS_BUTTONS = letterConfigs.psButtons
 
     // Function to initialize particles for any letter
     function initializeParticles(particleArray, targetPoints, particleCount, colorOverride) {
@@ -220,9 +230,6 @@ function App() {
       LETTERS.forEach(letterConfig => {
         updateParticles(letterConfig.particles, letterConfig.targets)
       })
-      PS_BUTTONS.forEach(buttonConfig => {
-        updateParticles(buttonConfig.particles, buttonConfig.targets)
-      })
       animationId = requestAnimationFrame(animate)
     }
 
@@ -230,15 +237,9 @@ function App() {
     resizeCanvas()
 
     // Initialize particles for all letters
-    const particleCount = v / 15
+    const particleCount = v / 12
     LETTERS.forEach(letterConfig => {
       initializeParticles(letterConfig.particles, letterConfig.targets, particleCount)
-    })
-
-    // Initialize particles for PS buttons (fewer particles)
-    const buttonParticleCount = v / 25
-    PS_BUTTONS.forEach(buttonConfig => {
-      initializeParticles(buttonConfig.particles, buttonConfig.targets, buttonParticleCount, buttonConfig.color.replace('hsl', 'hsla').replace(')', ',.2)'))
     })
 
     // Start animation
@@ -256,16 +257,24 @@ function App() {
         letterConfig.particles.length = 0
         letterConfig.targets.length = 0
       })
-      PS_BUTTONS.forEach(buttonConfig => {
-        buttonConfig.particles.length = 0
-        buttonConfig.targets.length = 0
-      })
     }
   }, [letterConfigs])
 
   return (
     <div className="App">
       <canvas ref={canvasRef} id="alx" />
+      
+      {/* Navigation Buttons */}
+      {letterConfigs.navigationButtons.map((button) => (
+        <NavigationButton
+          key={button.name}
+          shape={button.shape}
+          position={button.position}
+          color={button.color}
+          text={button.text}
+          href={button.href}
+        />
+      ))}
     </div>
   )
 }

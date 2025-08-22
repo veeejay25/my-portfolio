@@ -1,0 +1,173 @@
+.navigation-button {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.navigation-button:hover {
+  transform: scale(1.05);
+}
+
+/* Position buttons in corners */
+.navigation-button.top-left {
+  top: 50px;
+  left: 50px;
+}
+
+.navigation-button.top-right {
+  top: 50px;
+  right: 50px;
+}
+
+.navigation-button.bottom-left {
+  bottom: 50px;
+  left: 50px;
+}
+
+
+.navigation-button.bottom-right {
+  bottom: 50px;
+  right: 50px;
+}
+
+.button-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.button-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  font-size: 18px;
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  white-space: nowrap;
+  user-select: none;
+  pointer-events: none;
+  
+  /* Glow effect */
+  text-shadow: 
+    0 0 5px #fff,
+    0 0 10px #fff,
+    0 0 15px #00aaff,
+    0 0 20px #00aaff,
+    0 0 35px #00aaff,
+    0 0 40px #00aaff;
+  
+  transition: all 0.3s ease;
+}
+
+.navigation-button:hover .button-label {
+  color: #00aaff;
+  text-shadow: 
+    0 0 8px #00aaff,
+    0 0 15px #00aaff,
+    0 0 25px #00ffaa,
+    0 0 30px #00ffaa,
+    0 0 45px #00ffaa,
+    0 0 50px #00ffaa;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .navigation-button {
+    width: 350px;
+    height: 350px;
+  }
+  
+  .button-label {
+    font-size: 16px;
+  }
+  
+  .navigation-button.top-left {
+    top: 40px;
+    left: 40px;
+  }
+  
+  .navigation-button.top-right {
+    top: 40px;
+    right: 40px;
+  }
+  
+  .navigation-button.bottom-left {
+    bottom: 40px;
+    left: 40px;
+  }
+  
+  .navigation-button.bottom-right {
+    bottom: 40px;
+    right: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navigation-button {
+    width: 300px;
+    height: 300px;
+  }
+  
+  .button-label {
+    font-size: 14px;
+  }
+  
+  .navigation-button.top-left {
+    top: 30px;
+    left: 30px;
+  }
+  
+  .navigation-button.top-right {
+    top: 30px;
+    right: 30px;
+  }
+  
+  .navigation-button.bottom-left {
+    bottom: 30px;
+    left: 30px;
+  }
+  
+  .navigation-button.bottom-right {
+    bottom: 30px;
+    right: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navigation-button {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .button-label {
+    font-size: 12px;
+  }
+  
+  .navigation-button.top-left {
+    top: 20px;
+    left: 20px;
+  }
+  
+  .navigation-button.top-right {
+    top: 20px;
+    right: 20px;
+  }
+  
+  .navigation-button.bottom-left {
+    bottom: 20px;
+    left: 20px;
+  }
+  
+  .navigation-button.bottom-right {
+    bottom: 20px;
+    right: 20px;
+  }
+}
