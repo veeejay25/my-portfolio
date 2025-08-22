@@ -117,8 +117,7 @@ const NavigationButton = ({
     }
 
     function animate() {
-      ctx.fillStyle = "rgba(0,0,0,.2)"
-      ctx.fillRect(0, 0, size, size)
+      ctx.clearRect(0, 0, size, size)
       updateParticles()
       animationIdRef.current = requestAnimationFrame(animate)
     }
