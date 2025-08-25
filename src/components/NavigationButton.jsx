@@ -5,7 +5,10 @@ const NavigationButton = ({
   color, 
   text, 
   href, 
-  onClick 
+  onClick,
+  onMouseEnter,
+  onMouseLeave,
+  buttonIndex
 }) => {
   const handleClick = (e) => {
     e.preventDefault()
@@ -16,8 +19,25 @@ const NavigationButton = ({
     }
   }
 
+  const handleMouseEnter = () => {
+    if (onMouseEnter) {
+      onMouseEnter(buttonIndex)
+    }
+  }
+
+  const handleMouseLeave = () => {
+    if (onMouseLeave) {
+      onMouseLeave(buttonIndex)
+    }
+  }
+
   return (
-    <div className={`navigation-button ${position}`} onClick={handleClick}>
+    <div 
+      className={`navigation-button ${position}`} 
+      onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       {text && (
         <div className="button-label">
           {text}
