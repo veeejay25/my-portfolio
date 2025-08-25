@@ -68,41 +68,29 @@ function App() {
         { 
           name: 'about',
           text: 'About me',
-          shape: PS_BUTTON_SHAPES.TRIANGLE, 
           color: 'hsl(120, 70%, 50%)', 
-          position: 'top-left',
+          position: 'bottom-horizontal',
           href: '#about'
         },
         { 
           name: 'projects',
           text: 'Projects',
-          shape: PS_BUTTON_SHAPES.CIRCLE, 
           color: 'hsl(0, 70%, 50%)', 
-          position: 'top-right',
+          position: 'bottom-horizontal',
           href: '#projects'
         },
         { 
           name: 'skills',
           text: 'Skills',
-          shape: PS_BUTTON_SHAPES.X_SLASH, 
           color: 'hsl(240, 70%, 50%)', 
-          position: 'bottom-left',
-          href: '#skills'
-        },
-        { 
-          name: 'skills-backslash',
-          text: '',
-          shape: PS_BUTTON_SHAPES.X_BACKSLASH, 
-          color: 'hsl(240, 70%, 50%)', 
-          position: 'bottom-left',
+          position: 'bottom-horizontal',
           href: '#skills'
         },
         { 
           name: 'contact',
           text: 'Contact',
-          shape: PS_BUTTON_SHAPES.SQUARE, 
           color: 'hsl(300, 70%, 50%)', 
-          position: 'bottom-right',
+          position: 'bottom-horizontal',
           href: '#contact'
         }
       ]
@@ -135,7 +123,7 @@ function App() {
       const baseHeight = 1080
       const scaleX = WIDTH / baseWidth
       const scaleY = HEIGHT / baseHeight
-      const scale = Math.min(scaleX, scaleY, 1.0) // Cap at 1.0x to prevent oversizing
+      const scale = Math.min(scaleX, scaleY, 1.0) * 1.5 // Increased size by 1.5x
       
       // Recalculate letter positions
       LETTERS.forEach(letterConfig => {
@@ -265,16 +253,17 @@ function App() {
       <canvas ref={canvasRef} id="alx" />
       
       {/* Navigation Buttons */}
-      {letterConfigs.navigationButtons.map((button) => (
-        <NavigationButton
-          key={button.name}
-          shape={button.shape}
-          position={button.position}
-          color={button.color}
-          text={button.text}
-          href={button.href}
-        />
-      ))}
+      <div className="navigation-container">
+        {letterConfigs.navigationButtons.map((button) => (
+          <NavigationButton
+            key={button.name}
+            position={button.position}
+            color={button.color}
+            text={button.text}
+            href={button.href}
+          />
+        ))}
+      </div>
     </div>
   )
 }
